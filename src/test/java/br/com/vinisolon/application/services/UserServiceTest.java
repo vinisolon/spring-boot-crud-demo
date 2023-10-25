@@ -2,7 +2,6 @@ package br.com.vinisolon.application.services;
 
 import br.com.vinisolon.application.mappers.UserMapper;
 import br.com.vinisolon.application.repositories.UserRepository;
-import br.com.vinisolon.application.responses.SuccessResponse;
 import br.com.vinisolon.application.responses.UserResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +20,8 @@ import static br.com.vinisolon.application.common.MockConstants.USER_RESPONSE;
 import static br.com.vinisolon.application.common.MockConstants.VALID_CREATE_USER_REQUEST;
 import static br.com.vinisolon.application.common.MockConstants.VALID_UPDATE_USER_REQUEST;
 import static br.com.vinisolon.application.enums.Messages.DEFAULT_SUCCESS_MESSAGE;
+import static br.com.vinisolon.application.enums.Messages.USER_ALREADY_EXISTS_WITH_EMAIL;
+import static br.com.vinisolon.application.enums.Messages.USER_NOT_FOUND;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -41,83 +42,91 @@ class UserServiceTest {
     private UserMapper userMapper;
 
     @Test
-    void whenCreateWithExistentEmailThrowException() {
+    void create_ExistingEmail_ThrowsException() {
         when(userRepository.existsByEmail(any())).thenReturn(Boolean.TRUE);
 
-        assertThrows(RuntimeException.class, () -> userService.create(VALID_CREATE_USER_REQUEST));
+        var exception = assertThrows(RuntimeException.class, () -> userService.create(VALID_CREATE_USER_REQUEST));
+
+        assertEquals(USER_ALREADY_EXISTS_WITH_EMAIL.getMessage(), exception.getMessage());
     }
 
     @Test
-    void whenCreateWithValidRequestReturnSuccessResponse() {
+    void create_ValidRequest_ReturnsSuccessResponse() {
         when(userRepository.existsByEmail(any())).thenReturn(Boolean.FALSE);
 
         when(userMapper.requestToEntity(any())).thenReturn(USER);
 
         when(userRepository.save(any())).thenReturn(USER);
 
-        SuccessResponse response = userService.create(VALID_CREATE_USER_REQUEST);
+        var response = userService.create(VALID_CREATE_USER_REQUEST);
 
         assertEquals(DEFAULT_SUCCESS_MESSAGE.getMessage(), response.message());
     }
 
     @Test
-    void whenUpdateWithUnexistentUserIdThrowException() {
+    void update_UnexistingId_ThrowsException() {
         when(userRepository.findById(any())).thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class, () -> userService.update(VALID_UPDATE_USER_REQUEST));
+        var exception = assertThrows(RuntimeException.class, () -> userService.update(VALID_UPDATE_USER_REQUEST));
+
+        assertEquals(USER_NOT_FOUND.getMessage(), exception.getMessage());
     }
 
     @Test
-    void whenUpdateWithExistentUserEmailThrowException() {
+    void update_ExistingEmail_ThrowsException() {
         when(userRepository.findById(any())).thenReturn(Optional.of(USER));
 
         when(userRepository.existsByEmail(any())).thenReturn(Boolean.TRUE);
 
-        assertThrows(RuntimeException.class, () -> userService.update(INVALID_UPDATE_USER_REQUEST));
+        var exception = assertThrows(RuntimeException.class, () -> userService.update(INVALID_UPDATE_USER_REQUEST));
+
+        assertEquals(USER_ALREADY_EXISTS_WITH_EMAIL.getMessage(), exception.getMessage());
     }
 
     @Test
-    void whenUpdateWithValidRequestReturnSuccessResponse() {
+    void update_ValidRequest_ReturnsSuccessResponse() {
         when(userRepository.findById(any())).thenReturn(Optional.of(USER));
 
         doNothing().when(userMapper).updateEntity(any(), any());
 
         when(userRepository.save(any())).thenReturn(USER);
 
-        SuccessResponse response = userService.update(VALID_UPDATE_USER_REQUEST);
+        var response = userService.update(VALID_UPDATE_USER_REQUEST);
 
         assertEquals(DEFAULT_SUCCESS_MESSAGE.getMessage(), response.message());
     }
 
     @Test
-    void whenDeleteReturnSuccessResponse() {
+    void delete_ValidId_ReturnsSuccessResponse() {
         doNothing().when(userRepository).deleteById(any());
 
-        SuccessResponse response = userService.delete(DEFAULT_LONG);
+        var response = userService.delete(DEFAULT_LONG);
 
         assertEquals(DEFAULT_SUCCESS_MESSAGE.getMessage(), response.message());
     }
 
     @Test
-    void whenGetWithUnexistentUserIdThrowException() {
+    void get_UnexistingId_ThrowsException() {
         when(userRepository.findById(any())).thenReturn(Optional.empty());
 
-        assertThrows(RuntimeException.class, () -> userService.get(DEFAULT_LONG));
+        var exception = assertThrows(RuntimeException.class, () -> userService.get(DEFAULT_LONG));
+
+        assertEquals(USER_NOT_FOUND.getMessage(), exception.getMessage());
     }
 
     @Test
-    void whenGetWithExistentUserIdReturnUserResponse() {
+    void get_ExistingId_ReturnsUserResponse() {
         when(userRepository.findById(any())).thenReturn(Optional.of(USER));
 
         when(userMapper.entityToResponse(any())).thenReturn(USER_RESPONSE);
 
-        UserResponse response = userService.get(DEFAULT_LONG);
+        var response = userService.get(DEFAULT_LONG);
 
         assertEquals(USER_RESPONSE, response);
     }
 
     @Test
-    void whenGetAllReturnUserResponseList() {
+    void getAll_ExistingData_ReturnsListOfUserResponse() {
         when(userRepository.findAll()).thenReturn(Collections.singletonList(USER));
 
         when(userMapper.entityToResponse(any())).thenReturn(USER_RESPONSE);
