@@ -34,9 +34,12 @@ class UserRepositoryTest {
 
     @Test
     void save_InvalidData_ThrowsException() {
-        User user = new User();
+        User emptyUser = new User();
 
-        assertThrows(RuntimeException.class, () -> userRepository.save(user));
+        assertThrows(RuntimeException.class, () -> {
+            userRepository.save(emptyUser);
+            testEntityManager.flush();
+        });
 
         User blankUser = User.builder()
                 .username("")
@@ -44,7 +47,45 @@ class UserRepositoryTest {
                 .password("")
                 .build();
 
-        assertThrows(RuntimeException.class, () -> userRepository.save(blankUser));
+        assertThrows(RuntimeException.class, () -> {
+            userRepository.save(blankUser);
+            testEntityManager.flush();
+        });
+
+        User shortPasswordUser = User.builder()
+                .username("a")
+                .email("a")
+                .password("123")
+                .build();
+
+        assertThrows(RuntimeException.class, () -> {
+            userRepository.save(shortPasswordUser);
+            testEntityManager.flush();
+        });
+
+        User longPasswordUser = User.builder()
+                .username("a")
+                .email("a")
+                .password("12345678901234567")
+                .build();
+
+        assertThrows(RuntimeException.class, () -> {
+            userRepository.save(longPasswordUser);
+            testEntityManager.flush();
+        });
+
+
+        // Não deveria lançar RuntimeException e falhar o teste
+        User validUser = User.builder()
+                .username("vinicius")
+                .email("vinicius@email.com")
+                .password("123456789")
+                .build();
+
+        assertThrows(RuntimeException.class, () -> {
+            userRepository.save(validUser);
+            testEntityManager.flush();
+        });
     }
 
 }
