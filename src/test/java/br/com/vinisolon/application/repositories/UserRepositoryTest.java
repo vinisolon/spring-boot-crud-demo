@@ -2,6 +2,8 @@ package br.com.vinisolon.application.repositories;
 
 import br.com.vinisolon.application.entities.User;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -33,57 +35,26 @@ class UserRepositoryTest {
     }
 
     @Test
-    void save_InvalidData_ThrowsException() {
-        User emptyUser = new User();
+    void save_NullAttributes_ThrowsException() {
+        User user = new User();
 
         assertThrows(RuntimeException.class, () -> {
-            userRepository.save(emptyUser);
+            userRepository.save(user);
             testEntityManager.flush();
         });
+    }
 
-        User blankUser = User.builder()
-                .username("")
-                .email("")
-                .password("")
+    @ParameterizedTest
+    @ValueSource(strings = {"", "123", "12345678901234567"})
+    void save_InvalidStringAttributes_ThrowsException(String value) {
+        User user = User.builder()
+                .username(value)
+                .email(value)
+                .password(value)
                 .build();
 
         assertThrows(RuntimeException.class, () -> {
-            userRepository.save(blankUser);
-            testEntityManager.flush();
-        });
-
-        User shortPasswordUser = User.builder()
-                .username("a")
-                .email("a")
-                .password("123")
-                .build();
-
-        assertThrows(RuntimeException.class, () -> {
-            userRepository.save(shortPasswordUser);
-            testEntityManager.flush();
-        });
-
-        User longPasswordUser = User.builder()
-                .username("a")
-                .email("a")
-                .password("12345678901234567")
-                .build();
-
-        assertThrows(RuntimeException.class, () -> {
-            userRepository.save(longPasswordUser);
-            testEntityManager.flush();
-        });
-
-
-        // Não deveria lançar RuntimeException e falhar o teste
-        User validUser = User.builder()
-                .username("vinicius")
-                .email("vinicius@email.com")
-                .password("123456789")
-                .build();
-
-        assertThrows(RuntimeException.class, () -> {
-            userRepository.save(validUser);
+            userRepository.save(user);
             testEntityManager.flush();
         });
     }
