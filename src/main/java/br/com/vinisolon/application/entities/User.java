@@ -8,6 +8,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,12 +38,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @NotEmpty
     @Column(nullable = false, columnDefinition = "VARCHAR(30)")
     private String username;
 
+    @Size(min = 6, max = 16)
     @Column(nullable = false, columnDefinition = "VARCHAR(16)")
     private String password;
 
+    @NotEmpty
     @Column(nullable = false, columnDefinition = "VARCHAR(90)", unique = true)
     private String email;
 
