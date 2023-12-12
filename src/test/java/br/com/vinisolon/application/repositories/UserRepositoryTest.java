@@ -20,13 +20,13 @@ class UserRepositoryTest {
     private UserRepository userRepository;
 
     @Autowired
-    private TestEntityManager testEntityManager;
+    private TestEntityManager entityManager;
 
     @Test
     void save_ValidData_ReturnsUserEntity() {
         User savedUser = userRepository.save(USER);
 
-        User findedUser = testEntityManager.find(User.class, savedUser.getId());
+        User findedUser = entityManager.find(User.class, savedUser.getId());
 
         assertNotNull(findedUser);
         assertEquals(findedUser.getUsername(), USER.getUsername());
@@ -40,7 +40,7 @@ class UserRepositoryTest {
 
         assertThrows(RuntimeException.class, () -> {
             userRepository.save(user);
-            testEntityManager.flush();
+            entityManager.flush();
         });
     }
 
@@ -55,8 +55,17 @@ class UserRepositoryTest {
 
         assertThrows(RuntimeException.class, () -> {
             userRepository.save(user);
-            testEntityManager.flush();
+            entityManager.flush();
         });
+    }
+
+    @Test
+    void save_ExistingEmail_ThrowsException() {
+        User createdUser = entityManager.persistFlushFind(USER);
+        entityManager.detach(createdUser);
+        createdUser.setId(null);
+
+        assertThrows(RuntimeException.class, () -> userRepository.saveAndFlush(createdUser));
     }
 
 }
