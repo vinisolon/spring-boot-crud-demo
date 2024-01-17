@@ -39,4 +39,12 @@ public class MockConstants {
             DEFAULT_STRING, DEFAULT_STRING, DEFAULT_STRING, DEFAULT_LOCALDATETIME, DEFAULT_LOCALDATETIME
     );
 
+    public static User getUserInstance() {
+        return User.builder()
+                .email(DEFAULT_STRING)
+                .username(DEFAULT_STRING)
+                .password(DEFAULT_STRING)
+                .build();
+    }
+
 }
