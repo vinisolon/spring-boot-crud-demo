@@ -60,7 +60,7 @@ class UserServiceTest {
 
         var response = userService.create(VALID_CREATE_USER_REQUEST);
 
-        assertEquals(DEFAULT_SUCCESS_MESSAGE.getMessage(), response.message());
+        assertEquals(DEFAULT_SUCCESS_MESSAGE.getMessage(), response.getMessage());
     }
 
     @Test
@@ -93,7 +93,7 @@ class UserServiceTest {
 
         var response = userService.update(VALID_UPDATE_USER_REQUEST);
 
-        assertEquals(DEFAULT_SUCCESS_MESSAGE.getMessage(), response.message());
+        assertEquals(DEFAULT_SUCCESS_MESSAGE.getMessage(), response.getMessage());
     }
 
     @Test
@@ -102,7 +102,7 @@ class UserServiceTest {
 
         var response = userService.delete(DEFAULT_LONG);
 
-        assertEquals(DEFAULT_SUCCESS_MESSAGE.getMessage(), response.message());
+        assertEquals(DEFAULT_SUCCESS_MESSAGE.getMessage(), response.getMessage());
     }
 
     @Test
