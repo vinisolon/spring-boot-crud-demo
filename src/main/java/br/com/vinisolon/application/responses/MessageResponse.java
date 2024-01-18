@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @Generated
 @NoArgsConstructor
 @AllArgsConstructor
-public class SuccessResponse {
+public class MessageResponse {
+
     private String message;
+
 }

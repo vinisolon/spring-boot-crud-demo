@@ -82,7 +82,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;import br.com.vinisolon.application.repositories.UserRepository;
 &nbsp;import br.com.vinisolon.application.requests.CreateUserRequest;
 &nbsp;import br.com.vinisolon.application.requests.UpdateUserRequest;
-&nbsp;import br.com.vinisolon.application.responses.SuccessResponse;
+&nbsp;import br.com.vinisolon.application.responses.MessageResponse;
 &nbsp;import br.com.vinisolon.application.responses.UserResponse;
 &nbsp;import lombok.AllArgsConstructor;
 &nbsp;import org.springframework.stereotype.Service;
@@ -90,9 +90,9 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;import java.util.List;
 &nbsp;import java.util.Objects;
 &nbsp;
-&nbsp;import static br.com.vinisolon.application.enums.Messages.DEFAULT_SUCCESS_MESSAGE;
-&nbsp;import static br.com.vinisolon.application.enums.Messages.USER_ALREADY_EXISTS_WITH_EMAIL;
-&nbsp;import static br.com.vinisolon.application.enums.Messages.USER_NOT_FOUND;
+&nbsp;import static br.com.vinisolon.application.enums.ExceptionMessagesEnum.DEFAULT_SUCCESS_MESSAGE;
+&nbsp;import static br.com.vinisolon.application.enums.ExceptionMessagesEnum.USER_ALREADY_EXISTS_WITH_EMAIL;
+&nbsp;import static br.com.vinisolon.application.enums.ExceptionMessagesEnum.USER_NOT_FOUND;
 &nbsp;
 <b class="fc">&nbsp;@AllArgsConstructor</b>
 &nbsp;@Service

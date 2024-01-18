@@ -2,7 +2,7 @@ package br.com.vinisolon.application.controllers;
 
 import br.com.vinisolon.application.requests.CreateUserRequest;
 import br.com.vinisolon.application.requests.UpdateUserRequest;
-import br.com.vinisolon.application.responses.SuccessResponse;
+import br.com.vinisolon.application.responses.MessageResponse;
 import br.com.vinisolon.application.responses.UserResponse;
 import br.com.vinisolon.application.services.UserService;
 import jakarta.validation.Valid;
@@ -28,17 +28,17 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<SuccessResponse> create(@Valid @RequestBody CreateUserRequest request) {
+    public ResponseEntity<MessageResponse> create(@Valid @RequestBody CreateUserRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(request));
     }
 
     @PutMapping
-    public ResponseEntity<SuccessResponse> update(@Valid @RequestBody UpdateUserRequest request) {
+    public ResponseEntity<MessageResponse> update(@Valid @RequestBody UpdateUserRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.update(request));
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<SuccessResponse> delete(@PathVariable Long id) {
+    public ResponseEntity<MessageResponse> delete(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(userService.delete(id));
     }
 

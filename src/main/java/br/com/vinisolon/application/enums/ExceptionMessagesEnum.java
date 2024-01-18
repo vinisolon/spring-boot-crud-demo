@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public enum Messages {
+public enum ExceptionMessagesEnum {
 
     DEFAULT_SUCCESS_MESSAGE("Success."),
     DEFAULT_ERROR_MESSAGE("Unexpected error."),
