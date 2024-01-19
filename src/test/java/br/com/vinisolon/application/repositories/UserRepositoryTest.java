@@ -63,10 +63,10 @@ class UserRepositoryTest {
     @Test
     void save_ExistingEmail_ThrowsException() {
         User persistedUser = testEntityManager.persist(userEntity);
-
+        testEntityManager.detach(persistedUser);
         persistedUser.setId(null);
 
-        assertThrows(RuntimeException.class, () -> userRepository.saveAndFlush(persistedUser));
+        assertThrows(RuntimeException.class, () -> userRepository.save(persistedUser));
     }
 
     @Test
