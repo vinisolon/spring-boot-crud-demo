@@ -4,8 +4,7 @@ import br.com.vinisolon.application.entities.User;
 import br.com.vinisolon.application.exceptions.BusinessRuleException;
 import br.com.vinisolon.application.mappers.UserMapper;
 import br.com.vinisolon.application.repositories.UserRepository;
-import br.com.vinisolon.application.requests.CreateUserRequest;
-import br.com.vinisolon.application.requests.UpdateUserRequest;
+import br.com.vinisolon.application.requests.UserRequest;
 import br.com.vinisolon.application.responses.MessageResponse;
 import br.com.vinisolon.application.responses.UserResponse;
 import jakarta.persistence.EntityNotFoundException;
@@ -28,7 +27,7 @@ public class UserService {
     private final UserMapper userMapper;
 
     @Transactional
-    public MessageResponse create(CreateUserRequest request) {
+    public MessageResponse create(UserRequest request) {
         if (userRepository.existsByEmail(request.email())) {
             throw new BusinessRuleException(USER_ALREADY_EXISTS_WITH_EMAIL.getMessage());
         }
@@ -41,9 +40,9 @@ public class UserService {
     }
 
     @Transactional
-    public MessageResponse update(UpdateUserRequest request) {
+    public MessageResponse update(UserRequest request) {
         User user = userRepository.findById(request.id())
-                .orElseThrow(() -> new BusinessRuleException(USER_NOT_FOUND.getMessage()));
+                .orElseThrow(() -> new EntityNotFoundException(USER_NOT_FOUND.getMessage()));
 
         if (!Objects.equals(request.email(), user.getEmail())
                 && userRepository.existsByEmail(request.email())) {

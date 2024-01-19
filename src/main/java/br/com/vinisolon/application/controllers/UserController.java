@@ -1,14 +1,15 @@
 package br.com.vinisolon.application.controllers;
 
-import br.com.vinisolon.application.requests.CreateUserRequest;
-import br.com.vinisolon.application.requests.UpdateUserRequest;
+import br.com.vinisolon.application.requests.UserRequest;
 import br.com.vinisolon.application.responses.MessageResponse;
 import br.com.vinisolon.application.responses.UserResponse;
 import br.com.vinisolon.application.services.UserService;
-import jakarta.validation.Valid;
+import br.com.vinisolon.application.validation.groups.CreateGroup;
+import br.com.vinisolon.application.validation.groups.UpdateGroup;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,12 +29,12 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<MessageResponse> create(@Valid @RequestBody CreateUserRequest request) {
+    public ResponseEntity<MessageResponse> create(@Validated(CreateGroup.class) @RequestBody UserRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(request));
     }
 
     @PutMapping
-    public ResponseEntity<MessageResponse> update(@Valid @RequestBody UpdateUserRequest request) {
+    public ResponseEntity<MessageResponse> update(@Validated(UpdateGroup.class) @RequestBody UserRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.update(request));
     }
 
