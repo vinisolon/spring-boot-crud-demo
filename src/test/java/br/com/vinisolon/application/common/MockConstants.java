@@ -1,8 +1,7 @@
 package br.com.vinisolon.application.common;
 
 import br.com.vinisolon.application.entities.User;
-import br.com.vinisolon.application.requests.CreateUserRequest;
-import br.com.vinisolon.application.requests.UpdateUserRequest;
+import br.com.vinisolon.application.requests.UserRequest;
 import br.com.vinisolon.application.responses.MessageResponse;
 import br.com.vinisolon.application.responses.UserResponse;
 import lombok.AccessLevel;
@@ -28,28 +27,28 @@ public class MockConstants {
             .password(DEFAULT_STRING)
             .build();
 
-    public static final CreateUserRequest VALID_CREATE_USER_REQUEST = new CreateUserRequest(
-            DEFAULT_STRING, DEFAULT_STRING, DEFAULT_EMAIL
+    public static final UserRequest VALID_CREATE_USER_REQUEST = new UserRequest(
+            null, DEFAULT_STRING, DEFAULT_STRING, DEFAULT_EMAIL
     );
 
-    public static final CreateUserRequest BLANK_CREATE_USER_REQUEST = new CreateUserRequest(
-            BLANK_STRING, BLANK_STRING, BLANK_STRING
+    public static final UserRequest BLANK_USER_REQUEST = new UserRequest(
+            null, BLANK_STRING, BLANK_STRING, BLANK_STRING
     );
 
-    public static final CreateUserRequest NULL_CREATE_USER_REQUEST = new CreateUserRequest(
-            null, null, null
+    public static final UserRequest NULL_USER_REQUEST = new UserRequest(
+            null, null, null, null
     );
 
-    public static final UpdateUserRequest VALID_UPDATE_USER_REQUEST = new UpdateUserRequest(
+    public static final UserRequest VALID_UPDATE_USER_REQUEST = new UserRequest(
             DEFAULT_LONG, DEFAULT_STRING, DEFAULT_STRING, DEFAULT_EMAIL
     );
 
-    public static final UpdateUserRequest INVALID_UPDATE_USER_REQUEST = new UpdateUserRequest(
+    public static final UserRequest INVALID_UPDATE_USER_REQUEST = new UserRequest(
             DEFAULT_LONG, DEFAULT_STRING, DEFAULT_STRING, INVALID_STRING
     );
 
     public static final UserResponse USER_RESPONSE = new UserResponse(
-            DEFAULT_STRING, DEFAULT_STRING, DEFAULT_STRING, DEFAULT_LOCALDATETIME, DEFAULT_LOCALDATETIME
+            DEFAULT_STRING, DEFAULT_STRING, DEFAULT_LOCALDATETIME, DEFAULT_LOCALDATETIME
     );
 
     public static final MessageResponse DEFAULT_SUCCESS_RESPONSE = new MessageResponse(DEFAULT_SUCCESS_MESSAGE.getMessage());

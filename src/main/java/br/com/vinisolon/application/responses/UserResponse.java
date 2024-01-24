@@ -1,12 +1,23 @@
 package br.com.vinisolon.application.responses;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Generated;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
-public record UserResponse(
-        String username,
-        String password,
-        String email,
-        LocalDateTime createdAt,
-        LocalDateTime updatedAt
-) {
+@Data
+@Builder
+@Generated
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserResponse {
+
+    private String username;
+    private String email;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
 }
