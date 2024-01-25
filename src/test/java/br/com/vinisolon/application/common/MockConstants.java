@@ -8,12 +8,14 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static br.com.vinisolon.application.enums.ExceptionMessagesEnum.DEFAULT_SUCCESS_MESSAGE;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MockConstants {
 
+    public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSS");
     public static final LocalDateTime DEFAULT_LOCALDATETIME = LocalDateTime.now();
     public static final String BLANK_STRING = "";
     public static final String INVALID_STRING = "gnirtS";
@@ -21,11 +23,7 @@ public class MockConstants {
     public static final String DEFAULT_EMAIL = "test@email.com.br";
     public static final long DEFAULT_LONG = 1L;
 
-    public static final User USER = User.builder()
-            .email(DEFAULT_EMAIL)
-            .username(DEFAULT_STRING)
-            .password(DEFAULT_STRING)
-            .build();
+    public static final User USER = getUserInstance();
 
     public static final UserRequest VALID_CREATE_USER_REQUEST = new UserRequest(
             null, DEFAULT_STRING, DEFAULT_STRING, DEFAULT_EMAIL

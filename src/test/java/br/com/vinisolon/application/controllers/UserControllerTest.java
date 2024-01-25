@@ -11,12 +11,16 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.List;
+
 import static br.com.vinisolon.application.common.MockConstants.BLANK_USER_REQUEST;
 import static br.com.vinisolon.application.common.MockConstants.DEFAULT_SUCCESS_RESPONSE;
 import static br.com.vinisolon.application.common.MockConstants.NULL_USER_REQUEST;
 import static br.com.vinisolon.application.common.MockConstants.USER_RESPONSE;
 import static br.com.vinisolon.application.common.MockConstants.VALID_CREATE_USER_REQUEST;
 import static br.com.vinisolon.application.common.MockConstants.VALID_UPDATE_USER_REQUEST;
+import static br.com.vinisolon.application.common.MockConstants.formatter;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -161,17 +165,54 @@ class UserControllerTest {
     void get_WithExistingId_ReturnsUserResponse() throws Exception {
         when(userService.get(anyLong())).thenReturn(USER_RESPONSE);
 
-        // TODO: jsonPath($).value(USER_RESPONSE) doesn't work because of LocalDateTime in response
         mockMvc.perform(
                         get(ROOT_PATH + ID)
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-//                .andExpect(jsonPath("$").value(USER_RESPONSE.toString()));
                 .andExpect(jsonPath("$.username").value(USER_RESPONSE.getUsername()))
                 .andExpect(jsonPath("$.email").value(USER_RESPONSE.getEmail()))
-                .andExpect(jsonPath("$.createdAt").value(USER_RESPONSE.getCreatedAt()))
-                .andExpect(jsonPath("$.updatedAt").value(USER_RESPONSE.getUpdatedAt()));
+                .andExpect(jsonPath("$.createdAt").value(formatter.format(USER_RESPONSE.getCreatedAt())))
+                .andExpect(jsonPath("$.updatedAt").value(formatter.format(USER_RESPONSE.getUpdatedAt())));
+    }
+
+    @Test
+    void get_WithUnexistingId_ReturnsNotFound() throws Exception {
+        when(userService.get(anyLong())).thenThrow(EntityNotFoundException.class);
+
+        mockMvc.perform(
+                        get(ROOT_PATH + ID)
+                )
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void getAll_WithExistingData_ReturnsListOfUserResponse() throws Exception {
+        when(userService.getAll()).thenReturn(List.of(USER_RESPONSE, USER_RESPONSE));
+
+        mockMvc.perform(
+                        get(ROOT_PATH)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].username").value(USER_RESPONSE.getUsername()))
+                .andExpect(jsonPath("$[0].email").value(USER_RESPONSE.getEmail()))
+                .andExpect(jsonPath("$[0].createdAt").value(formatter.format(USER_RESPONSE.getCreatedAt())))
+                .andExpect(jsonPath("$[0].updatedAt").value(formatter.format(USER_RESPONSE.getUpdatedAt())));
+    }
+
+    @Test
+    void getAll_WithUnexistingData_ReturnsEmptyList() throws Exception {
+        when(userService.getAll()).thenReturn(List.of());
+
+        mockMvc.perform(
+                        get(ROOT_PATH)
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
     }
 
 }
