@@ -154,11 +154,14 @@ class UserControllerTest {
 
     @Test
     void delete_WithAnyId_ReturnsNoContent() throws Exception {
+        when(userService.delete(any())).thenReturn(DEFAULT_SUCCESS_RESPONSE);
+
         mockMvc.perform(
                         delete(ROOT_PATH + ID)
                 )
                 .andDo(print())
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value(DEFAULT_SUCCESS_RESPONSE));
     }
 
     @Test
