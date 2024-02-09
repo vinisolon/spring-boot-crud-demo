@@ -18,7 +18,6 @@ public class MockConstants {
     public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSS");
     public static final LocalDateTime DEFAULT_LOCALDATETIME = LocalDateTime.now();
     public static final String BLANK_STRING = "";
-    public static final String INVALID_STRING = "gnirtS";
     public static final String DEFAULT_STRING = "String";
     public static final String DEFAULT_EMAIL = "test@email.com.br";
     public static final String DEFAULT_EMAIL_2 = "test2@email.com.br";
@@ -28,11 +27,11 @@ public class MockConstants {
 
     public static final User USER = getUserInstance();
 
-    public static final UserRequest VALID_CREATE_USER_REQUEST = new UserRequest(
+    public static final UserRequest CREATE_USER_REQUEST = new UserRequest(
             null, DEFAULT_STRING, DEFAULT_STRING, INTEGRATION_EMAIL
     );
 
-    public static final UserRequest INVALID_CREATE_USER_REQUEST = new UserRequest(
+    public static final UserRequest CREATE_USER_REQUEST_DIFFERENT_EMAIL = new UserRequest(
             null, DEFAULT_STRING, DEFAULT_STRING, DEFAULT_EMAIL
     );
 
@@ -44,19 +43,15 @@ public class MockConstants {
             null, null, null, null
     );
 
-    public static final UserRequest VALID_UPDATE_USER_REQUEST = new UserRequest(
+    public static final UserRequest UPDATE_USER_REQUEST = new UserRequest(
             DEFAULT_LONG, DEFAULT_STRING, DEFAULT_STRING, DEFAULT_EMAIL
     );
 
-    public static final UserRequest INVALID_UPDATE_USER_REQUEST = new UserRequest(
-            DEFAULT_LONG, DEFAULT_STRING, DEFAULT_STRING, INVALID_STRING
-    );
-
-    public static final UserRequest INVALID_UPDATE_USER_REQUEST_UNEXISTING_ID = new UserRequest(
+    public static final UserRequest UPDATE_USER_REQUEST_DIFFERENT_ID = new UserRequest(
             DEFAULT_LONG_2, DEFAULT_STRING, DEFAULT_STRING, DEFAULT_EMAIL
     );
 
-    public static final UserRequest INVALID_UPDATE_USER_REQUEST_EXISTING_EMAIL = new UserRequest(
+    public static final UserRequest UPDATE_USER_REQUEST_DIFFERENT_EMAIL = new UserRequest(
             DEFAULT_LONG, DEFAULT_STRING, DEFAULT_STRING, DEFAULT_EMAIL_2
     );
 

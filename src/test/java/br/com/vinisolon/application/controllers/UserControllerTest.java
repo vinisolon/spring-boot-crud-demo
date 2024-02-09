@@ -17,8 +17,8 @@ import static br.com.vinisolon.application.common.MockConstants.BLANK_USER_REQUE
 import static br.com.vinisolon.application.common.MockConstants.DEFAULT_SUCCESS_RESPONSE;
 import static br.com.vinisolon.application.common.MockConstants.NULL_USER_REQUEST;
 import static br.com.vinisolon.application.common.MockConstants.USER_RESPONSE;
-import static br.com.vinisolon.application.common.MockConstants.VALID_CREATE_USER_REQUEST;
-import static br.com.vinisolon.application.common.MockConstants.VALID_UPDATE_USER_REQUEST;
+import static br.com.vinisolon.application.common.MockConstants.CREATE_USER_REQUEST;
+import static br.com.vinisolon.application.common.MockConstants.UPDATE_USER_REQUEST;
 import static br.com.vinisolon.application.common.MockConstants.formatter;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
@@ -54,7 +54,7 @@ class UserControllerTest {
         mockMvc.perform(
                         post(ROOT_PATH)
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(VALID_CREATE_USER_REQUEST))
+                                .content(objectMapper.writeValueAsString(CREATE_USER_REQUEST))
                 )
                 .andDo(print())
                 .andExpect(status().isCreated())
@@ -87,7 +87,7 @@ class UserControllerTest {
         mockMvc.perform(
                         post(ROOT_PATH)
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(VALID_CREATE_USER_REQUEST))
+                                .content(objectMapper.writeValueAsString(CREATE_USER_REQUEST))
                 )
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
@@ -100,7 +100,7 @@ class UserControllerTest {
         mockMvc.perform(
                         put(ROOT_PATH)
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(VALID_UPDATE_USER_REQUEST))
+                                .content(objectMapper.writeValueAsString(UPDATE_USER_REQUEST))
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -133,7 +133,7 @@ class UserControllerTest {
         mockMvc.perform(
                         put(ROOT_PATH)
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(VALID_UPDATE_USER_REQUEST))
+                                .content(objectMapper.writeValueAsString(UPDATE_USER_REQUEST))
                 )
                 .andDo(print())
                 .andExpect(status().isNotFound());
@@ -146,7 +146,7 @@ class UserControllerTest {
         mockMvc.perform(
                         put(ROOT_PATH)
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(VALID_UPDATE_USER_REQUEST))
+                                .content(objectMapper.writeValueAsString(UPDATE_USER_REQUEST))
                 )
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());

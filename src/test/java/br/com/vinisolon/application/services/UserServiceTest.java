@@ -13,12 +13,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static br.com.vinisolon.application.common.MockConstants.CREATE_USER_REQUEST;
 import static br.com.vinisolon.application.common.MockConstants.DEFAULT_LONG;
-import static br.com.vinisolon.application.common.MockConstants.INVALID_UPDATE_USER_REQUEST;
+import static br.com.vinisolon.application.common.MockConstants.UPDATE_USER_REQUEST;
+import static br.com.vinisolon.application.common.MockConstants.UPDATE_USER_REQUEST_DIFFERENT_EMAIL;
 import static br.com.vinisolon.application.common.MockConstants.USER;
 import static br.com.vinisolon.application.common.MockConstants.USER_RESPONSE;
-import static br.com.vinisolon.application.common.MockConstants.VALID_CREATE_USER_REQUEST;
-import static br.com.vinisolon.application.common.MockConstants.VALID_UPDATE_USER_REQUEST;
 import static br.com.vinisolon.application.enums.ExceptionMessagesEnum.DEFAULT_SUCCESS_MESSAGE;
 import static br.com.vinisolon.application.enums.ExceptionMessagesEnum.USER_ALREADY_EXISTS_WITH_EMAIL;
 import static br.com.vinisolon.application.enums.ExceptionMessagesEnum.USER_NOT_FOUND;
@@ -45,7 +45,7 @@ class UserServiceTest {
     void create_ExistingEmail_ThrowsException() {
         when(userRepository.existsByEmail(any())).thenReturn(Boolean.TRUE);
 
-        var exception = assertThrows(RuntimeException.class, () -> userService.create(VALID_CREATE_USER_REQUEST));
+        var exception = assertThrows(RuntimeException.class, () -> userService.create(CREATE_USER_REQUEST));
 
         assertEquals(USER_ALREADY_EXISTS_WITH_EMAIL.getMessage(), exception.getMessage());
     }
@@ -58,7 +58,7 @@ class UserServiceTest {
 
         when(userRepository.save(any())).thenReturn(USER);
 
-        var response = userService.create(VALID_CREATE_USER_REQUEST);
+        var response = userService.create(CREATE_USER_REQUEST);
 
         assertEquals(DEFAULT_SUCCESS_MESSAGE.getMessage(), response.getMessage());
     }
@@ -67,7 +67,7 @@ class UserServiceTest {
     void update_UnexistingId_ThrowsException() {
         when(userRepository.findById(any())).thenReturn(Optional.empty());
 
-        var exception = assertThrows(RuntimeException.class, () -> userService.update(VALID_UPDATE_USER_REQUEST));
+        var exception = assertThrows(RuntimeException.class, () -> userService.update(UPDATE_USER_REQUEST));
 
         assertEquals(USER_NOT_FOUND.getMessage(), exception.getMessage());
     }
@@ -78,7 +78,7 @@ class UserServiceTest {
 
         when(userRepository.existsByEmail(any())).thenReturn(Boolean.TRUE);
 
-        var exception = assertThrows(RuntimeException.class, () -> userService.update(INVALID_UPDATE_USER_REQUEST));
+        var exception = assertThrows(RuntimeException.class, () -> userService.update(UPDATE_USER_REQUEST_DIFFERENT_EMAIL));
 
         assertEquals(USER_ALREADY_EXISTS_WITH_EMAIL.getMessage(), exception.getMessage());
     }
@@ -91,7 +91,7 @@ class UserServiceTest {
 
         when(userRepository.save(any())).thenReturn(USER);
 
-        var response = userService.update(VALID_UPDATE_USER_REQUEST);
+        var response = userService.update(UPDATE_USER_REQUEST_DIFFERENT_EMAIL);
 
         assertEquals(DEFAULT_SUCCESS_MESSAGE.getMessage(), response.getMessage());
     }

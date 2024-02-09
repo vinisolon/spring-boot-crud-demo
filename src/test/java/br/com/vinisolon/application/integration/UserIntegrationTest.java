@@ -17,12 +17,12 @@ import org.springframework.test.context.jdbc.Sql;
 import java.util.Arrays;
 
 import static br.com.vinisolon.application.common.MockConstants.DEFAULT_SUCCESS_RESPONSE;
-import static br.com.vinisolon.application.common.MockConstants.INVALID_CREATE_USER_REQUEST;
-import static br.com.vinisolon.application.common.MockConstants.INVALID_UPDATE_USER_REQUEST_EXISTING_EMAIL;
-import static br.com.vinisolon.application.common.MockConstants.INVALID_UPDATE_USER_REQUEST_UNEXISTING_ID;
+import static br.com.vinisolon.application.common.MockConstants.CREATE_USER_REQUEST_DIFFERENT_EMAIL;
+import static br.com.vinisolon.application.common.MockConstants.UPDATE_USER_REQUEST_DIFFERENT_EMAIL;
+import static br.com.vinisolon.application.common.MockConstants.UPDATE_USER_REQUEST_DIFFERENT_ID;
 import static br.com.vinisolon.application.common.MockConstants.USER_RESPONSE;
-import static br.com.vinisolon.application.common.MockConstants.VALID_CREATE_USER_REQUEST;
-import static br.com.vinisolon.application.common.MockConstants.VALID_UPDATE_USER_REQUEST;
+import static br.com.vinisolon.application.common.MockConstants.CREATE_USER_REQUEST;
+import static br.com.vinisolon.application.common.MockConstants.UPDATE_USER_REQUEST;
 import static br.com.vinisolon.application.enums.ExceptionMessagesEnum.USER_ALREADY_EXISTS_WITH_EMAIL;
 import static br.com.vinisolon.application.enums.ExceptionMessagesEnum.USER_NOT_FOUND;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -46,7 +46,7 @@ class UserIntegrationTest {
 
     @Test
     void create_WithValidData_ReturnsCreated() {
-        ResponseEntity<MessageResponse> response = testRestTemplate.postForEntity(ROOT_PATH, VALID_CREATE_USER_REQUEST, MessageResponse.class);
+        ResponseEntity<MessageResponse> response = testRestTemplate.postForEntity(ROOT_PATH, CREATE_USER_REQUEST, MessageResponse.class);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -55,7 +55,7 @@ class UserIntegrationTest {
 
     @Test
     void create_WithExistingEmail_ThrowsException() {
-        ResponseEntity<ProblemDetail> response = testRestTemplate.postForEntity(ROOT_PATH, INVALID_CREATE_USER_REQUEST, ProblemDetail.class);
+        ResponseEntity<ProblemDetail> response = testRestTemplate.postForEntity(ROOT_PATH, CREATE_USER_REQUEST_DIFFERENT_EMAIL, ProblemDetail.class);
 
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -64,7 +64,7 @@ class UserIntegrationTest {
 
     @Test
     void update_WithValidData_ReturnsOk() {
-        ResponseEntity<MessageResponse> response = testRestTemplate.exchange(ROOT_PATH, HttpMethod.PUT, new HttpEntity<>(VALID_UPDATE_USER_REQUEST), MessageResponse.class);
+        ResponseEntity<MessageResponse> response = testRestTemplate.exchange(ROOT_PATH, HttpMethod.PUT, new HttpEntity<>(UPDATE_USER_REQUEST), MessageResponse.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -73,7 +73,7 @@ class UserIntegrationTest {
 
     @Test
     void update_WithUnexistingId_ThrowsException() {
-        ResponseEntity<ProblemDetail> response = testRestTemplate.exchange(ROOT_PATH, HttpMethod.PUT, new HttpEntity<>(INVALID_UPDATE_USER_REQUEST_UNEXISTING_ID), ProblemDetail.class);
+        ResponseEntity<ProblemDetail> response = testRestTemplate.exchange(ROOT_PATH, HttpMethod.PUT, new HttpEntity<>(UPDATE_USER_REQUEST_DIFFERENT_ID), ProblemDetail.class);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertNotNull(response.getBody());
@@ -82,7 +82,7 @@ class UserIntegrationTest {
 
     @Test
     void update_WithExistingEmail_ThrowsException() {
-        ResponseEntity<ProblemDetail> response = testRestTemplate.exchange(ROOT_PATH, HttpMethod.PUT, new HttpEntity<>(INVALID_UPDATE_USER_REQUEST_EXISTING_EMAIL), ProblemDetail.class);
+        ResponseEntity<ProblemDetail> response = testRestTemplate.exchange(ROOT_PATH, HttpMethod.PUT, new HttpEntity<>(UPDATE_USER_REQUEST_DIFFERENT_EMAIL), ProblemDetail.class);
 
         assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
         assertNotNull(response.getBody());
